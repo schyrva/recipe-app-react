@@ -7,7 +7,7 @@ import { RecipeGrid } from "@/components/recipe/RecipeGrid";
 import { Pagination } from "@/components/recipe/Pagination";
 import { Meal } from "@/types/meal";
 
-const ITEMS_PER_PAGE = 12;
+const ITEMS_PER_PAGE = 8;
 
 export function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");

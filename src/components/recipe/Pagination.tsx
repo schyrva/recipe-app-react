@@ -32,15 +32,15 @@ export function Pagination({
       forcePage={currentPage}
       containerClassName="flex justify-center items-center gap-1 mt-8"
       pageClassName="flex"
-      pageLinkClassName="w-10 h-10 flex items-center justify-center rounded-md hover:bg-muted transition-colors"
+      pageLinkClassName="w-10 h-10 flex items-center justify-center rounded-md hover:bg-muted transition-colors cursor-pointer"
       activeClassName="bg-primary text-primary-foreground rounded-md"
-      activeLinkClassName="hover:bg-primary"
+      activeLinkClassName="hover:bg-primary cursor-pointer"
       previousClassName="flex"
       nextClassName="flex"
-      previousLinkClassName="w-10 h-10 flex items-center justify-center rounded-md hover:bg-muted transition-colors"
-      nextLinkClassName="w-10 h-10 flex items-center justify-center rounded-md hover:bg-muted transition-colors"
+      previousLinkClassName="w-10 h-10 flex items-center justify-center rounded-md hover:bg-muted transition-colors cursor-pointer"
+      nextLinkClassName="w-10 h-10 flex items-center justify-center rounded-md hover:bg-muted transition-colors cursor-pointer"
       breakClassName="flex"
-      breakLinkClassName="w-10 h-10 flex items-center justify-center rounded-md hover:bg-muted transition-colors"
+      breakLinkClassName="w-10 h-10 flex items-center justify-center rounded-md hover:bg-muted transition-colors cursor-pointer"
       disabledClassName="opacity-50 cursor-not-allowed"
     />
   );
