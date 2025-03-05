@@ -1,17 +1,17 @@
-import { useState, useEffect } from "react";
-import { useMealsSearch } from "@/hooks/useMeals";
-import { useDebounce } from "use-debounce";
-import { SearchBar } from "@/components/recipe/SearchBar";
-import { CategoryFilter } from "@/components/recipe/CategoryFilter";
-import { RecipeGrid } from "@/components/recipe/RecipeGrid";
-import { Pagination } from "@/components/recipe/Pagination";
-import { Meal } from "@/types/meal";
-import { filterMealsByCategory } from "@/utils/mealUtils";
+import { useState, useEffect } from 'react';
+import { useMealsSearch } from '@/hooks/useMeals';
+import { useDebounce } from 'use-debounce';
+import { SearchBar } from '@/components/recipe/SearchBar';
+import { CategoryFilter } from '@/components/recipe/CategoryFilter';
+import { RecipeGrid } from '@/components/recipe/RecipeGrid';
+import { Pagination } from '@/components/recipe/Pagination';
+import { Meal } from '@/types/meal';
+import { filterMealsByCategory } from '@/utils/mealUtils';
 
 const ITEMS_PER_PAGE = 8;
 
 export function HomePage() {
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchQuery, setSearchQuery] = useState('');
   const [debouncedSearchQuery] = useDebounce(searchQuery, 500);
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
@@ -21,22 +21,18 @@ export function HomePage() {
     data: meals = [],
     isLoading,
     isError,
-  } = useMealsSearch(debouncedSearchQuery || "a", 1);
+  } = useMealsSearch(debouncedSearchQuery || 'a', 1);
 
-  
   const filteredMeals = selectedCategory
     ? filterMealsByCategory(meals, selectedCategory)
     : meals;
 
-  
   const pageCount = Math.ceil(filteredMeals.length / ITEMS_PER_PAGE);
 
-  
   useEffect(() => {
     setCurrentPage(0);
   }, [selectedCategory, debouncedSearchQuery]);
 
-  
   useEffect(() => {
     const startIndex = currentPage * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
@@ -45,7 +41,7 @@ export function HomePage() {
 
   const handlePageChange = (selectedPage: number) => {
     setCurrentPage(selectedPage);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (

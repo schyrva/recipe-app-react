@@ -10,7 +10,7 @@ interface IngredientsListProps {
 
 export function IngredientsList({
   ingredients,
-  title = "Combined Ingredients",
+  title = 'Combined Ingredients',
 }: IngredientsListProps) {
   if (ingredients.length === 0) {
     return (

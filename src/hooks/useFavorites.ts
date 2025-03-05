@@ -1,13 +1,13 @@
-import { Meal } from "@/types/meal";
-import { combineIngredients } from "@/utils/mealUtils";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { Meal } from '@/types/meal';
+import { combineIngredients } from '@/utils/mealUtils';
+import { useAppDispatch, useAppSelector } from '@/store/hooks';
 import {
   addFavorite as addFavoriteAction,
   removeFavorite as removeFavoriteAction,
   updateQuantity as updateQuantityAction,
   clearFavorites as clearFavoritesAction,
   selectFavorites,
-} from "@/store/slices/favoritesSlice";
+} from '@/store/slices/favoritesSlice';
 
 export const useFavorites = () => {
   const dispatch = useAppDispatch();
@@ -35,7 +35,7 @@ export const useFavorites = () => {
   };
 
   const isFavorite = (mealId: string) => {
-    return favorites.some((meal) => meal.idMeal === mealId);
+    return favorites.some(meal => meal.idMeal === mealId);
   };
 
   const getCombinedIngredients = () => {

@@ -1,4 +1,4 @@
-import { Search } from "lucide-react";
+import { Search } from 'lucide-react';
 
 interface SearchBarProps {
   value: string;
@@ -9,7 +9,7 @@ interface SearchBarProps {
 export function SearchBar({
   value,
   onChange,
-  placeholder = "Search recipes...",
+  placeholder = 'Search recipes...',
 }: SearchBarProps) {
   return (
     <div className="relative">
@@ -19,7 +19,7 @@ export function SearchBar({
       <input
         type="text"
         value={value}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={e => onChange(e.target.value)}
         className="w-full py-3 pl-10 pr-4 bg-background border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
         placeholder={placeholder}
       />

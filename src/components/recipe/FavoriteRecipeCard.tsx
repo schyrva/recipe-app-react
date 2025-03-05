@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
-import { FavoriteMeal } from "@/types/meal";
-import { useFavorites } from "@/hooks/useFavorites";
-import { Minus, Plus, Trash2 } from "lucide-react";
+import { Link } from 'react-router-dom';
+import { FavoriteMeal } from '@/types/meal';
+import { useFavorites } from '@/hooks/useFavorites';
+import { Minus, Plus, Trash2 } from 'lucide-react';
 
 interface FavoriteRecipeCardProps {
   meal: FavoriteMeal;

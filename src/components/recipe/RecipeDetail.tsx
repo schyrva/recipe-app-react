@@ -1,6 +1,6 @@
-import { Meal } from "@/types/meal";
-import { useFavorites } from "@/hooks/useFavorites";
-import { Heart, Youtube } from "lucide-react";
+import { Meal } from '@/types/meal';
+import { useFavorites } from '@/hooks/useFavorites';
+import { Heart, Youtube } from 'lucide-react';
 
 interface RecipeDetailProps {
   meal: Meal;
@@ -42,12 +42,12 @@ export function RecipeDetail({ meal }: RecipeDetailProps) {
             onClick={handleFavoriteToggle}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-colors ${
               isInFavorites
-                ? "bg-red-100 text-red-600"
-                : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+                ? 'bg-red-100 text-red-600'
+                : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
             }`}
           >
-            <Heart className={isInFavorites ? "fill-red-500" : ""} size={18} />
-            {isInFavorites ? "Remove from Favorites" : "Add to Favorites"}
+            <Heart className={isInFavorites ? 'fill-red-500' : ''} size={18} />
+            {isInFavorites ? 'Remove from Favorites' : 'Add to Favorites'}
           </button>
 
           {meal.strYoutube && (
@@ -83,7 +83,7 @@ export function RecipeDetail({ meal }: RecipeDetailProps) {
         <div>
           <h2 className="text-xl font-bold mb-4">Instructions</h2>
           <div className="prose max-w-none">
-            {meal.strInstructions.split("\r\n\r\n").map((paragraph, index) => (
+            {meal.strInstructions.split('\r\n\r\n').map((paragraph, index) => (
               <p key={index}>{paragraph}</p>
             ))}
           </div>

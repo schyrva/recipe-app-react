@@ -1,5 +1,5 @@
-import { Link } from "react-router-dom";
-import { useFavorites } from "@/hooks/useFavorites";
+import { Link } from 'react-router-dom';
+import { useFavorites } from '@/hooks/useFavorites';
 
 export function Header() {
   const { favorites } = useFavorites();

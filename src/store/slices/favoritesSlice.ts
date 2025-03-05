@@ -1,18 +1,17 @@
-import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { FavoriteMeal, Meal } from "@/types/meal";
-import { combineIngredients } from "@/utils/mealUtils";
-import { RootState } from "../index";
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { FavoriteMeal, Meal } from '@/types/meal';
+import { combineIngredients } from '@/utils/mealUtils';
+import { RootState } from '../index';
 
-const FAVORITES_STORAGE_KEY = "favorites";
-
+const FAVORITES_STORAGE_KEY = 'favorites';
 
 const loadFavoritesFromStorage = (): FavoriteMeal[] => {
-  if (typeof window === "undefined") return [];
+  if (typeof window === 'undefined') return [];
   try {
     const storedData = localStorage.getItem(FAVORITES_STORAGE_KEY);
     return storedData ? JSON.parse(storedData) : [];
   } catch (error) {
-    console.error("Error loading favorites from localStorage:", error);
+    console.error('Error loading favorites from localStorage:', error);
     return [];
   }
 };
@@ -26,32 +25,28 @@ const initialState: FavoritesState = {
 };
 
 export const favoritesSlice = createSlice({
-  name: "favorites",
+  name: 'favorites',
   initialState,
   reducers: {
     addFavorite: (state, action: PayloadAction<Meal>) => {
       const meal = action.payload;
       const existingIndex = state.items.findIndex(
-        (item) => item.idMeal === meal.idMeal
+        item => item.idMeal === meal.idMeal
       );
 
       if (existingIndex >= 0) {
-        
         state.items[existingIndex].quantity += 1;
       } else {
-        
         state.items.push({ ...meal, quantity: 1 });
       }
 
-      
       localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(state.items));
     },
 
     removeFavorite: (state, action: PayloadAction<string>) => {
       const mealId = action.payload;
-      state.items = state.items.filter((item) => item.idMeal !== mealId);
+      state.items = state.items.filter(item => item.idMeal !== mealId);
 
-      
       localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(state.items));
     },
 
@@ -62,42 +57,37 @@ export const favoritesSlice = createSlice({
       const { mealId, quantity } = action.payload;
 
       if (quantity <= 0) {
-        
-        state.items = state.items.filter((item) => item.idMeal !== mealId);
+        state.items = state.items.filter(item => item.idMeal !== mealId);
       } else {
-        
-        const index = state.items.findIndex((item) => item.idMeal === mealId);
+        const index = state.items.findIndex(item => item.idMeal === mealId);
         if (index >= 0) {
           state.items[index].quantity = quantity;
         }
       }
 
-      
       localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(state.items));
     },
 
-    clearFavorites: (state) => {
+    clearFavorites: state => {
       state.items = [];
       localStorage.removeItem(FAVORITES_STORAGE_KEY);
     },
   },
 });
 
-
 export const { addFavorite, removeFavorite, updateQuantity, clearFavorites } =
   favoritesSlice.actions;
-
 
 export const selectFavorites = (state: RootState) => state.favorites.items;
 
 export const selectIsFavorite = (mealId: string) =>
-  createSelector(selectFavorites, (favorites) => {
-    return favorites.some((item) => item.idMeal === mealId);
+  createSelector(selectFavorites, favorites => {
+    return favorites.some(item => item.idMeal === mealId);
   });
 
 export const selectCombinedIngredients = createSelector(
   selectFavorites,
-  (favorites) => combineIngredients(favorites)
+  favorites => combineIngredients(favorites)
 );
 
 export default favoritesSlice.reducer;

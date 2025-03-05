@@ -1,13 +1,13 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useMealById } from "@/hooks/useMeals";
-import { RecipeDetail } from "@/components/recipe/RecipeDetail";
-import { ArrowLeft } from "lucide-react";
+import { useParams, useNavigate } from 'react-router-dom';
+import { useMealById } from '@/hooks/useMeals';
+import { RecipeDetail } from '@/components/recipe/RecipeDetail';
+import { ArrowLeft } from 'lucide-react';
 
 export function RecipeDetailPage() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const { data: meal, isLoading, isError } = useMealById(id || "");
+  const { data: meal, isLoading, isError } = useMealById(id || '');
 
   const handleGoBack = () => {
     navigate(-1);

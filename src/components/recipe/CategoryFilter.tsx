@@ -1,4 +1,4 @@
-import { useCategories } from "@/hooks/useMeals";
+import { useCategories } from '@/hooks/useMeals';
 
 interface CategoryFilterProps {
   selectedCategory: string | null;
@@ -30,21 +30,21 @@ export function CategoryFilter({
         onClick={() => onSelectCategory(null)}
         className={`px-4 py-2 rounded-full text-sm whitespace-nowrap transition-colors cursor-pointer ${
           selectedCategory === null
-            ? "bg-primary text-primary-foreground"
-            : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+            ? 'bg-primary text-primary-foreground'
+            : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
         }`}
       >
         All Categories
       </button>
 
-      {categories.map((category) => (
+      {categories.map(category => (
         <button
           key={category}
           onClick={() => onSelectCategory(category)}
           className={`px-4 py-2 rounded-full text-sm whitespace-nowrap transition-colors cursor-pointer ${
             selectedCategory === category
-              ? "bg-primary text-primary-foreground"
-              : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
+              ? 'bg-primary text-primary-foreground'
+              : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
           }`}
         >
           {category}

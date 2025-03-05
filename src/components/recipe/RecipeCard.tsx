@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
-import { Meal } from "@/types/meal";
-import { useFavorites } from "@/hooks/useFavorites";
-import { Heart } from "lucide-react";
+import { Link } from 'react-router-dom';
+import { Meal } from '@/types/meal';
+import { useFavorites } from '@/hooks/useFavorites';
+import { Heart } from 'lucide-react';
 
 interface RecipeCardProps {
   meal: Meal;
@@ -35,12 +35,12 @@ export function RecipeCard({ meal }: RecipeCardProps) {
             onClick={handleFavoriteToggle}
             className="absolute top-2 right-2 p-2 bg-white/80 rounded-full hover:bg-white transition-colors"
             aria-label={
-              isInFavorites ? "Remove from favorites" : "Add to favorites"
+              isInFavorites ? 'Remove from favorites' : 'Add to favorites'
             }
           >
             <Heart
               className={`w-5 h-5 ${
-                isInFavorites ? "fill-red-500 text-red-500" : "text-gray-500"
+                isInFavorites ? 'fill-red-500 text-red-500' : 'text-gray-500'
               }`}
             />
           </button>

@@ -1,7 +1,7 @@
-import { useFavorites } from "@/hooks/useFavorites";
-import { FavoriteRecipeCard } from "@/components/recipe/FavoriteRecipeCard";
-import { IngredientsList } from "@/components/recipe/IngredientsList";
-import { Trash2 } from "lucide-react";
+import { useFavorites } from '@/hooks/useFavorites';
+import { FavoriteRecipeCard } from '@/components/recipe/FavoriteRecipeCard';
+import { IngredientsList } from '@/components/recipe/IngredientsList';
+import { Trash2 } from 'lucide-react';
 
 export function FavoritesPage() {
   const { favorites, clearFavorites, getCombinedIngredients } = useFavorites();
@@ -45,7 +45,7 @@ export function FavoritesPage() {
         <div className="lg:col-span-2">
           <h2 className="text-xl font-bold mb-4">Your Recipes</h2>
           <div className="space-y-4">
-            {favorites.map((meal) => (
+            {favorites.map(meal => (
               <FavoriteRecipeCard key={meal.idMeal} meal={meal} />
             ))}
           </div>
