@@ -1,54 +1,94 @@
-# React + TypeScript + Vite
+# Recipe App React
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Додаток для пошуку та збереження кулінарних рецептів, створений за допомогою React, TypeScript, Tailwind CSS і TanStack Query.
 
-Currently, two official plugins are available:
+## Структура проекту
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Проект побудований за принципами "Clean Architecture" і дотримується таких кращих практик:
 
-## Expanding the ESLint configuration
+- **KISS** (Keep It Simple, Stupid)
+- **DRY** (Don't Repeat Yourself)
+- **SOLID** принципи об'єктно-орієнтованого проектування
+- Модульна архітектура
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Структура папок
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-});
+```
+src/
+├── components/      # Компоненти React
+│   ├── layout/      # Компоненти розміщення (Layout, Navbar...)
+│   └── recipe/      # Компоненти, пов'язані з рецептами
+├── constants/       # Константи додатку
+│   ├── api.ts       # Константи, пов'язані з API
+│   ├── ui.ts        # Константи для інтерфейсу користувача
+│   └── index.ts     # Точка експорту всіх констант
+├── hooks/           # Призначені для користувача React хуки
+│   ├── useFavorites.ts  # Хук для роботи з улюбленими рецептами
+│   ├── useMeals.ts      # Хуки для роботи зі стравами та API
+│   └── index.ts         # Точка експорту всіх хуків
+├── lib/             # Бібліотеки та утиліти
+│   └── utils.ts     # Допоміжні функції для роботи з CSS класами
+├── pages/           # Компоненти сторінок
+├── services/        # Сервіси для роботи з API та іншими зовнішніми системами
+│   └── api/         # Сервіси для роботи з API
+│       ├── apiClient.ts    # Базовий клієнт для HTTP запитів
+│       ├── mealService.ts  # Сервіс для роботи з MealDB API
+│       ├── types.ts        # Типи для API
+│       └── index.ts        # Точка експорту для API сервісів
+├── types/           # TypeScript типи
+│   └── meal.ts      # Типи, пов'язані зі стравами
+└── utils/           # Утиліти для обробки даних
+    ├── mealUtils.ts # Утиліти для роботи зі стравами
+    └── index.ts     # Точка експорту всіх утиліт
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Технічний стек
 
-```js
-// eslint.config.js
-import reactX from "eslint-plugin-react-x";
-import reactDom from "eslint-plugin-react-dom";
+- **React** - бібліотека для створення користувацьких інтерфейсів
+- **TypeScript** - статично типізований JavaScript
+- **TanStack Query** - бібліотека для управління станом запитів та кешування
+- **Axios** - HTTP клієнт для виконання мережевих запитів
+- **Tailwind CSS** - утилітарний CSS фреймворк
+- **React Router** - бібліотека для маршрутизації в React додатках
+- **Vite** - інструмент для швидкої розробки
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    "react-x": reactX,
-    "react-dom": reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs["recommended-typescript"].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-});
+## Патерни та принципи
+
+### Сервісний шар
+
+API-запити зосереджені в сервісному шарі, що відокремлює бізнес-логіку від UI.
+
+### Хуки для бізнес-логіки
+
+Повторно використовувані хуки для спільної функціональності.
+
+### Кешування та управління станом
+
+TanStack Query використовується для ефективного управління станом запитів, кешування та фонового оновлення.
+
+### Типізація
+
+Ретельно визначені TypeScript типи для забезпечення надійності коду.
+
+## Запуск проекту
+
+```bash
+# Встановлення залежностей
+npm install
+
+# Запуск режиму розробки
+npm run dev
+
+# Запуск лінтера
+npm run lint
+
+# Збірка для продакшена
+npm run build
+
+# Попередній перегляд продакшен-збірки
+npm run preview
 ```
+
+## Документація API
+
+Додаток використовує [The MealDB API](https://www.themealdb.com/api.php) для отримання даних про рецепти.

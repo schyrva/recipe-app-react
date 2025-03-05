@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import { useMealsSearch, filterMealsByCategory } from "@/hooks/useMeals";
+import { useMealsSearch, } from "@/hooks/useMeals";
 import { useDebounce } from "use-debounce";
 import { SearchBar } from "@/components/recipe/SearchBar";
 import { CategoryFilter } from "@/components/recipe/CategoryFilter";
 import { RecipeGrid } from "@/components/recipe/RecipeGrid";
 import { Pagination } from "@/components/recipe/Pagination";
 import { Meal } from "@/types/meal";
+import { filterMealsByCategory } from "@/utils/mealUtils";
 
 const ITEMS_PER_PAGE = 8;
 

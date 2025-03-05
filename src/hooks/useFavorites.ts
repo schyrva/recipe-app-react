@@ -1,8 +1,10 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { FavoriteMeal, Meal } from "@/types/meal";
+import { combineIngredients } from "@/utils/mealUtils";
 
 // Define query key
 const FAVORITES_QUERY_KEY = ["favorites"];
+const FAVORITES_STORAGE_KEY = "recipe-app-favorites";
 
 export const useFavorites = () => {
   const queryClient = useQueryClient();
@@ -12,7 +14,7 @@ export const useFavorites = () => {
     queryKey: FAVORITES_QUERY_KEY,
     queryFn: () => {
       // On first load, try to get data from localStorage
-      const savedFavorites = localStorage.getItem("recipe-app-favorites");
+      const savedFavorites = localStorage.getItem(FAVORITES_STORAGE_KEY);
       const initialData = savedFavorites ? JSON.parse(savedFavorites) : [];
 
       // After initial load, we'll use query cache only
@@ -50,7 +52,7 @@ export const useFavorites = () => {
 
         // Also update localStorage for persistence between page refreshes
         localStorage.setItem(
-          "recipe-app-favorites",
+          FAVORITES_STORAGE_KEY,
           JSON.stringify(newFavorites)
         );
         return newFavorites;
@@ -67,7 +69,7 @@ export const useFavorites = () => {
           (meal) => meal.idMeal !== mealId
         );
         localStorage.setItem(
-          "recipe-app-favorites",
+          FAVORITES_STORAGE_KEY,
           JSON.stringify(newFavorites)
         );
         return newFavorites;
@@ -89,7 +91,7 @@ export const useFavorites = () => {
           meal.idMeal === mealId ? { ...meal, quantity } : meal
         );
         localStorage.setItem(
-          "recipe-app-favorites",
+          FAVORITES_STORAGE_KEY,
           JSON.stringify(newFavorites)
         );
         return newFavorites;
@@ -100,7 +102,7 @@ export const useFavorites = () => {
   // Clear all favorites
   const clearFavorites = () => {
     queryClient.setQueryData<FavoriteMeal[]>(FAVORITES_QUERY_KEY, []);
-    localStorage.removeItem("recipe-app-favorites");
+    localStorage.removeItem(FAVORITES_STORAGE_KEY);
   };
 
   // Check if a meal is in favorites
@@ -113,28 +115,7 @@ export const useFavorites = () => {
 
   // Get combined ingredients from all favorites
   const getCombinedIngredients = () => {
-    const ingredientMap = new Map<string, { name: string; measure: string }>();
-
-    favorites.forEach((meal) => {
-      meal.ingredients.forEach((ingredient) => {
-        const key = ingredient.name.toLowerCase();
-
-        if (ingredientMap.has(key)) {
-          const existing = ingredientMap.get(key)!;
-          ingredientMap.set(key, {
-            name: ingredient.name,
-            measure: `${existing.measure}, ${ingredient.measure} (${meal.strMeal})`,
-          });
-        } else {
-          ingredientMap.set(key, {
-            name: ingredient.name,
-            measure: `${ingredient.measure} (${meal.strMeal})`,
-          });
-        }
-      });
-    });
-
-    return Array.from(ingredientMap.values());
+    return combineIngredients(favorites);
   };
 
   return {

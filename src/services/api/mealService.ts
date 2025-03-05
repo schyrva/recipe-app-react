@@ -1,20 +1,29 @@
-import { Meal } from "@/types/meal";
+import {
+  Meal,
+  CategoryApiResponse,
+  MealApiResponse,
+  mapToMeal,
+} from "@/types/meal";
 import apiClient from "./apiClient";
-import { CategoryApiResponse, MealApiResponse, mapToMeal } from "./types";
+import { API_ENDPOINTS } from "@/constants/api";
 
 /**
- * MealDB API сервіс
- * Використовує axios для роботи з MealDB API
+ * Service for interacting with the MealDB API
  */
-class MealDbService {
+class MealService {
   /**
-   * Пошук страв за назвою
+   * Search for meals by name
+   * @param query - The search query
+   * @returns Array of meals matching the query
    */
   async searchMeals(query: string): Promise<Meal[]> {
     try {
-      const { data } = await apiClient.get<MealApiResponse>(`/search.php`, {
-        params: { s: query },
-      });
+      const { data } = await apiClient.get<MealApiResponse>(
+        API_ENDPOINTS.SEARCH,
+        {
+          params: { s: query },
+        }
+      );
 
       if (!data.meals) return [];
 
@@ -26,13 +35,18 @@ class MealDbService {
   }
 
   /**
-   * Отримання страви за ID
+   * Get meal details by ID
+   * @param id - The meal ID
+   * @returns Meal details or null if not found
    */
   async getMealById(id: string): Promise<Meal | null> {
     try {
-      const { data } = await apiClient.get<MealApiResponse>(`/lookup.php`, {
-        params: { i: id },
-      });
+      const { data } = await apiClient.get<MealApiResponse>(
+        API_ENDPOINTS.LOOKUP,
+        {
+          params: { i: id },
+        }
+      );
 
       if (!data.meals || data.meals.length === 0) return null;
 
@@ -44,12 +58,13 @@ class MealDbService {
   }
 
   /**
-   * Отримання всіх категорій
+   * Get all available meal categories
+   * @returns Array of category names
    */
   async getCategories(): Promise<string[]> {
     try {
       const { data } = await apiClient.get<CategoryApiResponse>(
-        `/categories.php`
+        API_ENDPOINTS.CATEGORIES
       );
 
       return data.categories.map((category) => category.strCategory);
@@ -60,11 +75,14 @@ class MealDbService {
   }
 
   /**
-   * Отримання випадкової страви
+   * Get a random meal
+   * @returns Random meal or null if API fails
    */
   async getRandomMeal(): Promise<Meal | null> {
     try {
-      const { data } = await apiClient.get<MealApiResponse>(`/random.php`);
+      const { data } = await apiClient.get<MealApiResponse>(
+        API_ENDPOINTS.RANDOM
+      );
 
       if (!data.meals || data.meals.length === 0) return null;
 
@@ -76,17 +94,22 @@ class MealDbService {
   }
 
   /**
-   * Фільтрація за категорією
+   * Filter meals by category
+   * @param category - The category to filter by
+   * @returns Array of meals in the specified category
    */
   async filterByCategory(category: string): Promise<Meal[]> {
     try {
-      const { data } = await apiClient.get<MealApiResponse>(`/filter.php`, {
-        params: { c: category },
-      });
+      const { data } = await apiClient.get<MealApiResponse>(
+        API_ENDPOINTS.FILTER,
+        {
+          params: { c: category },
+        }
+      );
 
       if (!data.meals) return [];
 
-      // Фільтр-endpoint не повертає повні деталі, тому отримуємо кожну страву окремо
+      // Filter endpoint doesn't return full meal details, so fetch each meal
       const mealPromises = data.meals.map((meal) =>
         this.getMealById(meal.idMeal)
       );
@@ -100,5 +123,5 @@ class MealDbService {
   }
 }
 
-// Експортуємо єдиний екземпляр сервісу
-export const mealDbApi = new MealDbService();
+// Export a singleton instance
+export const mealService = new MealService();
