@@ -1,43 +1,78 @@
-import { useState, useEffect } from "react";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { FavoriteMeal, Meal } from "@/types/meal";
 
-const FAVORITES_STORAGE_KEY = "recipe-app-favorites";
+// Define query key
+const FAVORITES_QUERY_KEY = ["favorites"];
 
 export const useFavorites = () => {
-  const [favorites, setFavorites] = useState<FavoriteMeal[]>(() => {
-    // Initialize from localStorage if available
-    const savedFavorites = localStorage.getItem(FAVORITES_STORAGE_KEY);
-    return savedFavorites ? JSON.parse(savedFavorites) : [];
-  });
+  const queryClient = useQueryClient();
 
-  // Save to localStorage whenever favorites change
-  useEffect(() => {
-    localStorage.setItem(FAVORITES_STORAGE_KEY, JSON.stringify(favorites));
-  }, [favorites]);
+  // Read favorites from query cache
+  const { data: favorites = [] } = useQuery({
+    queryKey: FAVORITES_QUERY_KEY,
+    queryFn: () => {
+      // On first load, try to get data from localStorage
+      const savedFavorites = localStorage.getItem("recipe-app-favorites");
+      const initialData = savedFavorites ? JSON.parse(savedFavorites) : [];
+
+      // After initial load, we'll use query cache only
+      return initialData as FavoriteMeal[];
+    },
+    // Enable stale time forever to keep the data in cache
+    staleTime: Infinity,
+    // Don't refetch when window is focused, we want to manage this data manually
+    refetchOnWindowFocus: false,
+    // Keep cache data when component unmounts
+    gcTime: Infinity,
+  });
 
   // Add a meal to favorites
   const addFavorite = (meal: Meal) => {
-    setFavorites((prev) => {
-      const existingIndex = prev.findIndex((fav) => fav.idMeal === meal.idMeal);
+    queryClient.setQueryData<FavoriteMeal[]>(
+      FAVORITES_QUERY_KEY,
+      (prevFavorites = []) => {
+        const existingIndex = prevFavorites.findIndex(
+          (fav) => fav.idMeal === meal.idMeal
+        );
 
-      if (existingIndex >= 0) {
-        // Increase quantity if already in favorites
-        const updated = [...prev];
-        updated[existingIndex] = {
-          ...updated[existingIndex],
-          quantity: updated[existingIndex].quantity + 1,
-        };
-        return updated;
-      } else {
-        // Add new item with quantity 1
-        return [...prev, { ...meal, quantity: 1 }];
+        let newFavorites;
+        if (existingIndex >= 0) {
+          // Increase quantity if already in favorites
+          newFavorites = [...prevFavorites];
+          newFavorites[existingIndex] = {
+            ...newFavorites[existingIndex],
+            quantity: newFavorites[existingIndex].quantity + 1,
+          };
+        } else {
+          // Add new item with quantity 1
+          newFavorites = [...prevFavorites, { ...meal, quantity: 1 }];
+        }
+
+        // Also update localStorage for persistence between page refreshes
+        localStorage.setItem(
+          "recipe-app-favorites",
+          JSON.stringify(newFavorites)
+        );
+        return newFavorites;
       }
-    });
+    );
   };
 
   // Remove a meal from favorites
   const removeFavorite = (mealId: string) => {
-    setFavorites((prev) => prev.filter((meal) => meal.idMeal !== mealId));
+    queryClient.setQueryData<FavoriteMeal[]>(
+      FAVORITES_QUERY_KEY,
+      (prevFavorites = []) => {
+        const newFavorites = prevFavorites.filter(
+          (meal) => meal.idMeal !== mealId
+        );
+        localStorage.setItem(
+          "recipe-app-favorites",
+          JSON.stringify(newFavorites)
+        );
+        return newFavorites;
+      }
+    );
   };
 
   // Update the quantity of a favorite meal
@@ -47,21 +82,33 @@ export const useFavorites = () => {
       return;
     }
 
-    setFavorites((prev) =>
-      prev.map((meal) =>
-        meal.idMeal === mealId ? { ...meal, quantity } : meal
-      )
+    queryClient.setQueryData<FavoriteMeal[]>(
+      FAVORITES_QUERY_KEY,
+      (prevFavorites = []) => {
+        const newFavorites = prevFavorites.map((meal) =>
+          meal.idMeal === mealId ? { ...meal, quantity } : meal
+        );
+        localStorage.setItem(
+          "recipe-app-favorites",
+          JSON.stringify(newFavorites)
+        );
+        return newFavorites;
+      }
     );
   };
 
   // Clear all favorites
   const clearFavorites = () => {
-    setFavorites([]);
+    queryClient.setQueryData<FavoriteMeal[]>(FAVORITES_QUERY_KEY, []);
+    localStorage.removeItem("recipe-app-favorites");
   };
 
   // Check if a meal is in favorites
   const isFavorite = (mealId: string) => {
-    return favorites.some((meal) => meal.idMeal === mealId);
+    // Get current data directly from the cache
+    const currentFavorites =
+      queryClient.getQueryData<FavoriteMeal[]>(FAVORITES_QUERY_KEY) || [];
+    return currentFavorites.some((meal) => meal.idMeal === mealId);
   };
 
   // Get combined ingredients from all favorites
