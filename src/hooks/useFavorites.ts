@@ -12,20 +12,16 @@ import {
 export const useFavorites = () => {
   const dispatch = useAppDispatch();
 
-  
   const favorites = useAppSelector(selectFavorites);
 
-  
   const addFavorite = (meal: Meal) => {
     dispatch(addFavoriteAction(meal));
   };
 
-  
   const removeFavorite = (mealId: string) => {
     dispatch(removeFavoriteAction(mealId));
   };
 
-  
   const updateQuantity = (mealId: string, quantity: number) => {
     if (quantity <= 0) {
       dispatch(removeFavoriteAction(mealId));
@@ -34,17 +30,14 @@ export const useFavorites = () => {
     }
   };
 
-  
   const clearFavorites = () => {
     dispatch(clearFavoritesAction());
   };
 
-  
   const isFavorite = (mealId: string) => {
     return favorites.some((meal) => meal.idMeal === mealId);
   };
 
-  
   const getCombinedIngredients = () => {
     return combineIngredients(favorites);
   };

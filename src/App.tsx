@@ -7,11 +7,10 @@ import { HomePage } from "@/pages/HomePage";
 import { RecipeDetailPage } from "@/pages/RecipeDetailPage";
 import { FavoritesPage } from "@/pages/FavoritesPage";
 
-
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 5 * 60 * 1000, 
+      staleTime: 5 * 60 * 1000,
       refetchOnWindowFocus: false,
     },
   },
