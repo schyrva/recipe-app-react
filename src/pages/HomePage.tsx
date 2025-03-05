@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useMealsSearch, } from "@/hooks/useMeals";
+import { useMealsSearch } from "@/hooks/useMeals";
 import { useDebounce } from "use-debounce";
 import { SearchBar } from "@/components/recipe/SearchBar";
 import { CategoryFilter } from "@/components/recipe/CategoryFilter";
@@ -23,16 +23,20 @@ export function HomePage() {
     isError,
   } = useMealsSearch(debouncedSearchQuery || "a", 1);
 
+  
   const filteredMeals = selectedCategory
     ? filterMealsByCategory(meals, selectedCategory)
     : meals;
 
+  
   const pageCount = Math.ceil(filteredMeals.length / ITEMS_PER_PAGE);
 
+  
   useEffect(() => {
     setCurrentPage(0);
   }, [selectedCategory, debouncedSearchQuery]);
 
+  
   useEffect(() => {
     const startIndex = currentPage * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
