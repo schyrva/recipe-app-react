@@ -23,20 +23,16 @@ export function HomePage() {
     isError,
   } = useMealsSearch(debouncedSearchQuery || "a", 1);
 
-  // Filter meals by category
   const filteredMeals = selectedCategory
     ? filterMealsByCategory(meals, selectedCategory)
     : meals;
 
-  // Calculate pagination
   const pageCount = Math.ceil(filteredMeals.length / ITEMS_PER_PAGE);
 
-  // Reset to first page when filters change
   useEffect(() => {
     setCurrentPage(0);
   }, [selectedCategory, debouncedSearchQuery]);
 
-  // Update paginated meals when filtered meals or current page changes
   useEffect(() => {
     const startIndex = currentPage * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;

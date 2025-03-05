@@ -1,5 +1,6 @@
 import { ReactNode } from "react";
-import { Navbar } from "./Navbar";
+import { Header } from "./Header";
+import { Footer } from "./Footer";
 
 interface LayoutProps {
   children: ReactNode;
@@ -8,13 +9,11 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen flex flex-col">
-      <Navbar />
+      <Header />
+
       <main className="flex-1 container mx-auto py-8 px-4">{children}</main>
-      <footer className="bg-muted py-6 text-center text-muted-foreground">
-        <div className="container mx-auto">
-          <p>© {new Date().getFullYear()} Recipe App. All rights reserved.</p>
-        </div>
-      </footer>
+      
+      <Footer />
     </div>
   );
 }

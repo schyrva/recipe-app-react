@@ -1,10 +1,3 @@
-/**
- * Core meal types
- */
-
-/**
- * Represents a meal with complete information
- */
 export interface Meal {
   idMeal: string;
   strMeal: string;
@@ -20,44 +13,25 @@ export interface Meal {
   ingredients: Ingredient[];
 }
 
-/**
- * Simplified meal model with basic info only
- */
 export interface MealBasic {
   idMeal: string;
   strMeal: string;
   strMealThumb: string;
 }
 
-/**
- * Represents an ingredient with its name and measure
- */
 export interface Ingredient {
   name: string;
   measure: string;
 }
 
-/**
- * A meal that has been added to favorites with quantity
- */
 export interface FavoriteMeal extends Meal {
   quantity: number;
 }
 
-/**
- * Meal category information
- */
 export interface MealCategory {
   strCategory: string;
 }
 
-/**
- * API related types
- */
-
-/**
- * Raw meal data structure from the MealDB API
- */
 export interface RawMealData {
   idMeal: string;
   strMeal: string;
@@ -70,19 +44,13 @@ export interface RawMealData {
   strSource: string;
   strImageSource: string | null;
   dateModified: string | null;
-  [key: string]: string | null; // For strIngredient1, strMeasure1, etc.
+  [key: string]: string | null;
 }
 
-/**
- * Response type for meal-related API endpoints
- */
 export interface MealApiResponse {
   meals: RawMealData[] | null;
 }
 
-/**
- * Response type for the categories API endpoint
- */
 export interface CategoryApiResponse {
   categories: {
     idCategory: string;
@@ -92,13 +60,6 @@ export interface CategoryApiResponse {
   }[];
 }
 
-/**
- * Helper functions
- */
-
-/**
- * Transforms raw meal data from the API to our application's Meal type
- */
 export const mapToMeal = (rawMeal: RawMealData): Meal => {
   return {
     idMeal: rawMeal.idMeal,
@@ -116,9 +77,6 @@ export const mapToMeal = (rawMeal: RawMealData): Meal => {
   };
 };
 
-/**
- * Extracts ingredients from raw meal data
- */
 export const extractIngredients = (mealData: RawMealData): Ingredient[] => {
   const ingredients: Ingredient[] = [];
 

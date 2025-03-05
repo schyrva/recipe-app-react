@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { FavoriteMeal } from "@/types/meal";
 import { useFavorites } from "@/hooks/useFavorites";
-import { Minus, Plus, Trash2 } from "lucide-react";
+import { FavoriteRecipeInfo } from "./FavoriteRecipeInfo";
+import { QuantityControl } from "./QuantityControl";
 
 interface FavoriteRecipeCardProps {
   meal: FavoriteMeal;
@@ -35,46 +36,14 @@ export function FavoriteRecipeCard({ meal }: FavoriteRecipeCardProps) {
       </Link>
 
       <div className="p-4 flex-1 flex flex-col">
-        <div className="flex justify-between items-start mb-2">
-          <Link to={`/recipe/${meal.idMeal}`} className="hover:underline">
-            <h3 className="font-bold text-lg">{meal.strMeal}</h3>
-          </Link>
-          <button
-            onClick={handleRemove}
-            className="text-muted-foreground hover:text-destructive transition-colors"
-            aria-label="Remove from favorites"
-          >
-            <Trash2 size={18} />
-          </button>
-        </div>
+        <FavoriteRecipeInfo meal={meal} onRemove={handleRemove} />
 
-        <div className="text-sm text-muted-foreground mb-4">
-          <span>{meal.strCategory}</span>
-          <span className="mx-2">•</span>
-          <span>{meal.strArea}</span>
-        </div>
-
-        <div className="mt-auto flex items-center">
-          <div className="flex items-center border border-input rounded-md overflow-hidden">
-            <button
-              onClick={handleDecrement}
-              disabled={meal.quantity <= 1}
-              className="p-2 hover:bg-muted transition-colors disabled:opacity-50"
-              aria-label="Decrease quantity"
-            >
-              <Minus size={16} />
-            </button>
-            <span className="px-4 py-1 border-x border-input">
-              {meal.quantity}
-            </span>
-            <button
-              onClick={handleIncrement}
-              className="p-2 hover:bg-muted transition-colors"
-              aria-label="Increase quantity"
-            >
-              <Plus size={16} />
-            </button>
-          </div>
+        <div className="mt-auto">
+          <QuantityControl
+            quantity={meal.quantity}
+            onIncrement={handleIncrement}
+            onDecrement={handleDecrement}
+          />
         </div>
       </div>
     </div>

@@ -7,15 +7,7 @@ import {
 import apiClient from "./apiClient";
 import { API_ENDPOINTS } from "@/constants/api";
 
-/**
- * Service for interacting with the MealDB API
- */
 class MealService {
-  /**
-   * Search for meals by name
-   * @param query - The search query
-   * @returns Array of meals matching the query
-   */
   async searchMeals(query: string): Promise<Meal[]> {
     try {
       const { data } = await apiClient.get<MealApiResponse>(
@@ -34,11 +26,6 @@ class MealService {
     }
   }
 
-  /**
-   * Get meal details by ID
-   * @param id - The meal ID
-   * @returns Meal details or null if not found
-   */
   async getMealById(id: string): Promise<Meal | null> {
     try {
       const { data } = await apiClient.get<MealApiResponse>(
@@ -57,10 +44,6 @@ class MealService {
     }
   }
 
-  /**
-   * Get all available meal categories
-   * @returns Array of category names
-   */
   async getCategories(): Promise<string[]> {
     try {
       const { data } = await apiClient.get<CategoryApiResponse>(
@@ -74,17 +57,16 @@ class MealService {
     }
   }
 
-  /**
-   * Get a random meal
-   * @returns Random meal or null if API fails
-   */
   async getRandomMeal(): Promise<Meal | null> {
     try {
       const { data } = await apiClient.get<MealApiResponse>(
         API_ENDPOINTS.RANDOM
       );
 
-      if (!data.meals || data.meals.length === 0) return null;
+      if (!data.meals || data.meals.length === 0) {
+        console.error("No random meal found");
+        return null;
+      }
 
       return mapToMeal(data.meals[0]);
     } catch (error) {
@@ -93,11 +75,6 @@ class MealService {
     }
   }
 
-  /**
-   * Filter meals by category
-   * @param category - The category to filter by
-   * @returns Array of meals in the specified category
-   */
   async filterByCategory(category: string): Promise<Meal[]> {
     try {
       const { data } = await apiClient.get<MealApiResponse>(
@@ -107,9 +84,11 @@ class MealService {
         }
       );
 
-      if (!data.meals) return [];
+      if (!data.meals) {
+        console.error("No meals found for category:", category);
+        return [];
+      }
 
-      // Filter endpoint doesn't return full meal details, so fetch each meal
       const mealPromises = data.meals.map((meal) =>
         this.getMealById(meal.idMeal)
       );
